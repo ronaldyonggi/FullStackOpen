@@ -1,7 +1,10 @@
-const Filter = ({ value, onChange }) => {
+const Filter = ({ newFilter, setNewFilter}) => {
+    // Handle filter box change
+    const handleFilterChange = event => setNewFilter(event.target.value)
+
     return (
         <div>
-            find countries <input value={value} onChange={onChange}/>
+            find countries <input value={newFilter} onChange={handleFilterChange}/>
         </div>
     )
 }
