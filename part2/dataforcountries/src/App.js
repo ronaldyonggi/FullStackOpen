@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from './components/Filter'
+import Show from './components/Show'
 
 const App = () => {
   const [newFilter, setNewFilter] = useState('')
@@ -30,24 +31,10 @@ const App = () => {
     })
   })
 
-  // Handle filter box change
-  const handleFilterChange = event => setNewFilter(event.target.value)
-
-  // Filtered countries to show
-  const countriesToShow = () => {
-    // If the filter box is full, return nothing
-    if (newFilter === '') return []
-    // Otherwise filter country based on the filter input
-    return countries.filter(country => {
-      let countryLowerCased = country.name.common.toLowerCase()
-      let filterLowerCased = newFilter.toLowerCase()
-      return countryLowerCased.includes(filterLowerCased)
-    })
-  }
-
   return (
     <>
-      <Filter value={newFilter} onChange={handleFilterChange} />
+      <Filter value={newFilter} setNewFilter={setNewFilter} />
+      <Show countries={countries} newFilter={newFilter} />
     </>
   )
 }
