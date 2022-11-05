@@ -25,6 +25,8 @@ const App = () => {
       for (let language of Object.values(country.languages)) {
         console.log(language)
       }
+      // Country flag
+      console.log(country.flag)
       */
      setCountries(response.data)
       
