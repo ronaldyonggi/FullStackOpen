@@ -13,6 +13,7 @@ const Show = ({ countries, newFilter }) => {
             })
             // If length of filteredCountries is more than 10, return "too many matches"
             if (filteredCountries.length > 10) return <>Too many matches, specify another filter</>
+
             // If there's only one matching country, display details
             else if (filteredCountries.length === 1) {
                 let country = filteredCountries[0]
@@ -29,7 +30,7 @@ const Show = ({ countries, newFilter }) => {
                         <h4>Languages:</h4>
                         {Object.values(country.languages).map(language => 
                             <div key={language}>
-                                {language}
+                                {language} 
                             </div>)}
                         <div>{countryFlag}</div>
                     </div>
@@ -41,7 +42,11 @@ const Show = ({ countries, newFilter }) => {
                 for (let country of filteredCountries) {
                     countryNames.push(country.name.common)
                 }
-                return countryNames.map(country => <li>{country}</li>)
+                return countryNames.map(country => 
+                <div key={country}>
+                    {country}
+                </div>)
+                // console.log(countryNames)
             }
         }
     }
