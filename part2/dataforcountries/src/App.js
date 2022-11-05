@@ -12,22 +12,6 @@ const App = () => {
     axios
     .get('https://restcountries.com/v3.1/all')
     .then(response => {
-      /*
-      let country = response.data[2]
-      console.log(country)
-      // Common name
-      console.log("Common name is",country.name.common)
-      // Capital
-      console.log("Capital is",country.capital[0])
-      // Area
-      console.log("Area is",country.area)
-      // Languages
-      for (let language of Object.values(country.languages)) {
-        console.log(language)
-      }
-      // Country flag
-      console.log(country.flag)
-      */
      setCountries(response.data)
       
     })
