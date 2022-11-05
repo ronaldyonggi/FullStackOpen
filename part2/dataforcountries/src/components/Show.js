@@ -41,6 +41,7 @@ const Show = ({ countries, newFilter }) => {
                 for (let country of filteredCountries) {
                     countryNames.push(country.name.common)
                 }
+                return countryNames.map(country => <li>{country}</li>)
             }
         }
     }
