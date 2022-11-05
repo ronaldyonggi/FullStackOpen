@@ -1,3 +1,5 @@
+import Showbutton from "./components/Showbutton"
+
 const Show = ({ countries, newFilter }) => {
 
     // Filtered countries to show
@@ -30,23 +32,25 @@ const Show = ({ countries, newFilter }) => {
                         <h4>Languages:</h4>
                         {Object.values(country.languages).map(language => 
                             <div key={language}>
-                                {language} 
+                                {language}
                             </div>)}
                         <div>{countryFlag}</div>
                     </div>
                 )
             }
-            // Otherwise filtered countries are between 2 to 10. Simply list the countries
+            // Otherwise filtered countries are between 2 to 10.
             else {
-                let countryNames = []
-                for (let country of filteredCountries) {
-                    countryNames.push(country.name.common)
-                }
-                return countryNames.map(country => 
-                <div key={country}>
-                    {country}
-                </div>)
-                // console.log(countryNames)
+                return (
+                    <>
+                        {Object.values(filteredCountries).map(country => 
+                        <div key={country.name.common}>
+                            {country.name.common}
+                            <Showbutton text="show" country={country}/>
+                        </div>
+
+                            )}
+                    </>
+                )
             }
         }
     }
