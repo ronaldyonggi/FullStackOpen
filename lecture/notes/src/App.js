@@ -26,7 +26,6 @@ const App = (props) => {
     // promise.then(eventHandler)
   }, [])
 
-
   // console.log('render', notes.length, 'notes')
 
   const handleNoteChange = event => {
@@ -52,11 +51,28 @@ const App = (props) => {
         setNewNote('') // Reset the input box back to empty
       })
   }
-
   
   const notesToShow = showAll
   ? notes
   : notes.filter(note => note.important === true)
+
+  // Change the importance of a note from important to not important, or vice versa
+  const toggleImportanceOf = id => {
+    // console.log(`importance of ${id} needs to be toggled`)
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id )
+    // changedNote is a copty of the old note but with the importance switched
+    const changedNote = { ...note, important: !note.important}
+
+    axios
+      .put(url, changedNote)
+      .then(response => {
+        setNotes(notes.map(
+          n => n.id !== id ? n : response.data
+        ))
+      })
+
+  }
 
   return (
     <div>
@@ -68,7 +84,11 @@ const App = (props) => {
       </div>
       <ul>
         {notesToShow.map(note => 
-        <Note key={note.id} note={note} />
+        <Note 
+          key={note.id} 
+          note={note}
+          toggleImportance = {() => toggleImportanceOf(note.id)}
+        />
           )}
       </ul>
       <form onSubmit={addNote}>
