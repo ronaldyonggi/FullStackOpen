@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import noteService from './services/notes'
 import Note from "./components/Note";
 
 const App = (props) => {
@@ -8,13 +8,15 @@ const App = (props) => {
   const [showAll, setShowAll] = useState(true) // Determines what to show
 
   useEffect(() => {
-    // console.log('effect')
 
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
+    // axios
+    //   .get('http://localhost:3001/notes')
+    noteService
+      .getAll()
+      .then(initialNotes => {
         // console.log('promise fulfilled')
-        setNotes(response.data)
+        // setNotes(response.data)
+        setNotes(initialNotes)
       })
 
     // const eventHandler = response => {
@@ -44,10 +46,12 @@ const App = (props) => {
 
     // setNotes(notes.concat(noteObject))
     // setNewNote('')
-    axios
-      .post('http://localhost:3001/notes', noteObject) // add the new object do db.json
-      .then(response => {
-        setNotes(notes.concat(response.data)) // Add this note to the resource to be rendered. 
+    // axios
+    //   .post('http://localhost:3001/notes', noteObject) // add the new object do db.json
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote)) // Add this note to the resource to be rendered. 
         setNewNote('') // Reset the input box back to empty
       })
   }
@@ -58,19 +62,25 @@ const App = (props) => {
 
   // Change the importance of a note from important to not important, or vice versa
   const toggleImportanceOf = id => {
-    const url = `http://localhost:3001/notes/${id}` 
+    // const url = `http://localhost:3001/notes/${id}` 
     const note = notes.find(note => note.id === id ) 
     // changedNote is a copy of the old note but with the importance switched
     const changedNote = { ...note, important: !note.important}
 
-    axios
-      .put(url, changedNote)
-      .then(response => {
+    // axios
+    //   .put(url, changedNote)
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
         setNotes(notes.map(
           // The mapping result will be an array where other than the changed note,
           // all the other notes are the same as the old one (unchanged)
-          note => note.id !== id ? note : response.data
+          note => note.id !== id ? note : returnedNote
         ))
+      })
+      .catch(error => {
+        alert(`the note '${note.content}' was already deleted from server`)
+        setNotes(notes.filter(n => n.id !== id))
       })
 
   }
