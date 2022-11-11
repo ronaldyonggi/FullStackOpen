@@ -40,9 +40,26 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
-
     }
   }
+
+  // Filtered people to show
+  const filteredPersons = () => {
+    // If the filter input is empty, by default show all
+    if (newFilter === '') return persons
+    return persons.filter(person => {
+    let personLowercase = person.name.toLowerCase()
+    let filterLowercase = newFilter.toLowerCase()
+    return personLowercase.includes(filterLowercase)
+    })
+  }
+
+  // Deleting a name
+  // const deleteName = id => {
+  //   // Search the name using the provided id
+  //   numberService
+  //     .deleteService(id)
+  // }
 
 
   // Handle name input box change
@@ -54,18 +71,6 @@ const App = () => {
     setNewFilter(event.target.value)
   }
   
-  // Filtered person to show
-  // const filteredPersons = () => {
-  //   // If the filter input is empty, then by default show all
-  //   if (newFilter === '') return persons
-  //   return persons.filter(person => {
-  //     let personLowercase = person.name.toLowerCase()
-  //     let filterLowercase = newFilter.toLowerCase()
-  //     return personLowercase.includes(filterLowercase)
-  //   })
-  // }
-
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -91,8 +96,11 @@ const App = () => {
       handleNumberInputChange={handleNumberInputChange}
       />
       <h2>Numbers</h2>
-      {/* {filteredPersons().map(person => <div key={person.name}>{person.name} {person.number}</div>)} */}
-      <Persons persons={persons} newFilter={newFilter} />
+      {filteredPersons().map(person => 
+        <Persons 
+        person={person}
+        // deleteName={deleteName}
+        />)}
     </div>
   )
 }
