@@ -1,5 +1,3 @@
-
-
 const Persons = ({persons, newFilter}) => {
     // Filtered person to show
     const filteredPersons = () => {
