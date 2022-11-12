@@ -55,11 +55,11 @@ const App = () => {
   }
 
   // Deleting a name
-  // const deleteName = id => {
-  //   // Search the name using the provided id
-  //   numberService
-  //     .deleteService(id)
-  // }
+  const deleteName = (name, id) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      numberService.deleteService(id)
+    }
+  }
 
 
   // Handle name input box change
@@ -95,11 +95,13 @@ const App = () => {
       newNumber={newNumber}
       handleNumberInputChange={handleNumberInputChange}
       />
+
       <h2>Numbers</h2>
       {filteredPersons().map(person => 
         <Persons 
+        key={person.id}
         person={person}
-        // deleteName={deleteName}
+        deleteHandler={() => deleteName(person.name, person.id) }
         />)}
     </div>
   )
