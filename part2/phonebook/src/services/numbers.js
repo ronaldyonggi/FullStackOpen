@@ -17,7 +17,6 @@ const create = newObject => {
 // Delete a name
 const deleteService = id => {
     return axios.delete(`${baseUrl}/${id}`)
-    // return request.then(response => response.data)
 }
 
 export default {getAll, create, deleteService}
