@@ -26,11 +26,31 @@ const App = () => {
   const addName = event => {
     event.preventDefault()
     let isExist = false; // flag that indicates whether the name is already present
+    let idToUpdate = 0;
     persons.forEach(person => {
-      if (newName === person.name) isExist = true
+      if (newName === person.name) {
+        isExist = true
+        idToUpdate = person.id
+      }
     })
+    // If already exists, prompt to update the person's phone number
     if (isExist) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook. Replace the old number with a new one?`)) {
+        // Find that person from the db
+        const person = persons.find(person => person.id === idToUpdate)
+        // Create a copy of the person above
+        const updatedPerson = {...person, number: newNumber}
+        // Then do the update
+        numberService
+          .update(idToUpdate, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map (
+              person => person.id !== idToUpdate ? person : returnedPerson
+            ))
+          })
+        setNewName('')
+        setNewNumber('')
+      }
     } else {
       // setPersons(persons.concat({name: newName, number: newNumber}))
       numberService
