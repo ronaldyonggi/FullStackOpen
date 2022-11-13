@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import noteService from './services/notes'
 import Note from "./components/Note";
+import Notification from './components/Notification'
 
 const App = (props) => {
   const [notes, setNotes] = useState([]) // The notes resource
   const [newNote, setNewNote] = useState('') // The input box
   const [showAll, setShowAll] = useState(true) // Determines what to show
+  const [errorMessage, setErrorMessage] = useState('some error occurred')
 
   useEffect(() => {
 
@@ -79,7 +81,11 @@ const App = (props) => {
         ))
       })
       .catch(error => {
-        alert(`the note '${note.content}' was already deleted from server`)
+        // alert(`the note '${note.content}' was already deleted from server`)
+        setErrorMessage(`Note '${note.content} was already removed from server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000);
         setNotes(notes.filter(n => n.id !== id))
       })
 
@@ -88,6 +94,7 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
