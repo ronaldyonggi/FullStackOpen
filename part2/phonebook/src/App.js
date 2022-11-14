@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import numberService from './services/numbers'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notification, setNotificaton] = useState(null)
 
   useEffect(() => {
     // axios
@@ -48,6 +50,13 @@ const App = () => {
               person => person.id !== idToUpdate ? person : returnedPerson
             ))
           })
+
+        // Add notification that says name's number is successfully updated
+        setNotificaton(`${newName}'s number has been successfully updated`)
+        setTimeout(() => {
+          setNotificaton(null)
+        }, 5000);
+        // Reset name and number field 
         setNewName('')
         setNewNumber('')
       }
@@ -60,6 +69,11 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+      // Add notification that says name is successfully added
+      setNotificaton(`Added ${newName}`)
+      setTimeout(() => {
+        setNotificaton(null)
+      }, 5000);
     }
   }
 
@@ -94,6 +108,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       {/* <div>
         filter shown with <input value={newFilter} onChange={handleFilterChange}/>
       </div> */}
