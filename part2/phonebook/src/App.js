@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [notification, setNotificaton] = useState(null)
+  const [notification, setNotification] = useState(null)
+  const [errorType, setErrorType] = useState(0) // If 0, indicates notification is normal message (green). If 1 = error message(red)
 
   useEffect(() => {
     // axios
@@ -29,6 +30,7 @@ const App = () => {
     event.preventDefault()
     let isExist = false; // flag that indicates whether the name is already present
     let idToUpdate = 0;
+    setErrorType(0)
     persons.forEach(person => {
       if (newName === person.name) {
         isExist = true
@@ -49,16 +51,23 @@ const App = () => {
             setPersons(persons.map (
               person => person.id !== idToUpdate ? person : returnedPerson
             ))
+            // Add notification that says name's number is successfully updated
+            setNotification(`${newName}'s number has been successfully updated`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000);
+            // Reset name and number field 
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            setErrorType(1) // set the type of notification to error type (red)
+            setNotification(`Information of ${newName} has already been removed from server`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000);
           })
 
-        // Add notification that says name's number is successfully updated
-        setNotificaton(`${newName}'s number has been successfully updated`)
-        setTimeout(() => {
-          setNotificaton(null)
-        }, 5000);
-        // Reset name and number field 
-        setNewName('')
-        setNewNumber('')
       }
     } else {
       // setPersons(persons.concat({name: newName, number: newNumber}))
@@ -70,9 +79,9 @@ const App = () => {
           setNewNumber('')
         })
       // Add notification that says name is successfully added
-      setNotificaton(`Added ${newName}`)
+      setNotification(`Added ${newName}`)
       setTimeout(() => {
-        setNotificaton(null)
+        setNotification(null)
       }, 5000);
     }
   }
@@ -91,7 +100,8 @@ const App = () => {
   // Deleting a name
   const deleteName = (name, id) => {
     if (window.confirm(`Delete ${name}?`)) {
-      numberService.deleteService(id)
+      numberService
+        .deleteService(id)
     }
   }
 
@@ -108,7 +118,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification} errorType={errorType} />
       {/* <div>
         filter shown with <input value={newFilter} onChange={handleFilterChange}/>
       </div> */}
