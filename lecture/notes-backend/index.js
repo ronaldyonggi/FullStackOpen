@@ -1,4 +1,10 @@
-const http = require('http')
+// const http = require('http')
+const { response } = require('express')
+const express = require('express')
+const app = express()
+
+app.use(express.json())
+
 
 let notes = [
     {
@@ -21,13 +27,62 @@ let notes = [
     }
   ]
 
-const app = http.createServer((request, response) => {
-    response.writeHead(200, {
-        // 'Content-Type': 'text/plain'
-        'Content-Type': 'application/json'
+// const app = http.createServer((request, response) => {
+//     response.writeHead(200, {
+//         // 'Content-Type': 'text/plain'
+//         'Content-Type': 'application/json'
+//     })
+//     // response.end('Hello World')
+//     response.end(JSON.stringify(notes))
+// })
+
+app.get('/', (request, response) => {
+    response.send('<h1>Hello World!</h1>')
+})
+
+app.get('/api/notes', (request, response) => {
+    response.json(notes)
+})
+
+app.get('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const note = notes.find(note => note.id === id)
+  
+  if (note) response.json(note) // If the id exists (not undefined), response with the note
+  else response.status(404).end() // Otherwise if the id doesn't exist, give status 404
+})
+
+app.delete('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  notes = notes.filter(note => note.id !== id) // update notes. Now notes are containing all the note that don't have the id that was deleted
+  response.status(204).end()
+})
+
+const generateId = () => {
+  const maxId = notes.length > 0
+  ? Math.max(...notes.map(n => n.id))
+  : 0
+  return maxId + 1
+}
+
+app.post('/api/notes', (request, response) => {
+  const body = request.body
+
+  if (!body.content) { // If the content body is null
+    return response.status(400).json({
+      error: 'content missing'
     })
-    // response.end('Hello World')
-    response.end(JSON.stringify(notes))
+  }
+
+  const note = {
+    content: body.content,
+    important: body.important || false,
+    date: new Date(),
+    id: generateId()
+  }
+
+  notes = notes.concat(note)
+  response.json(note)
 })
 
 const PORT = 3001
