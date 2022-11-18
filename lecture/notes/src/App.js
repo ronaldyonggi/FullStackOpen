@@ -8,7 +8,7 @@ const App = (props) => {
   const [notes, setNotes] = useState([]) // The notes resource
   const [newNote, setNewNote] = useState('') // The input box
   const [showAll, setShowAll] = useState(true) // Determines what to show
-  const [errorMessage, setErrorMessage] = useState('some error occurred')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
 
