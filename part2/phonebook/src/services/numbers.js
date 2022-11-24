@@ -1,6 +1,6 @@
 // Services for communicating with backend
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/persons'
 
 // Retrieve phone numbers from DB server
 const getAll = () => {
