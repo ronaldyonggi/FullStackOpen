@@ -23,7 +23,7 @@ const App = () => {
       .getAll()
       .then(initialNames => setPersons(initialNames))
 
-  })
+  }, [])
 
   // Adding a new Name
   const addName = event => {
