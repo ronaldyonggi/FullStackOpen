@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import numberService from './services/numbers'
+import personService from './services/persons'
 import Notification from './components/Notification'
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
     //   .then(response => {
     //     setPersons(response.data)
     //   })
-    numberService
+    personService
       .getAll()
       .then(initialNames => setPersons(initialNames))
 
@@ -45,7 +45,7 @@ const App = () => {
         // Create a copy of the person above
         const updatedPerson = {...person, number: newNumber}
         // Then do the update
-        numberService
+        personService
           .update(idToUpdate, updatedPerson)
           .then(returnedPerson => {
             setPersons(persons.map (
@@ -71,7 +71,7 @@ const App = () => {
       }
     } else {
       // setPersons(persons.concat({name: newName, number: newNumber}))
-      numberService
+      personService
         .create({name: newName, number: newNumber})
         .then(returnedName => {
           setPersons(persons.concat(returnedName))
@@ -100,7 +100,7 @@ const App = () => {
   // Deleting a name
   const deleteName = (name, id) => {
     if (window.confirm(`Delete ${name}?`)) {
-      numberService
+      personService
         .deleteService(id)
     }
   }
