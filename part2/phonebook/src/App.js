@@ -73,16 +73,22 @@ const App = () => {
       // setPersons(persons.concat({name: newName, number: newNumber}))
       personService
         .create({name: newName, number: newNumber})
-        .then(returnedName => {
-          setPersons(persons.concat(returnedName))
-          setNewName('')
-          setNewNumber('')
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson))
+          setNewName('') // reset the name field
+          setNewNumber('') // reset the number field
+          // Add notification that says name is successfully added
+          setNotification(`Added ${newName}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000);
         })
-      // Add notification that says name is successfully added
-      setNotification(`Added ${newName}`)
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000);
+        .catch(error => {
+          setNotification(error.response)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000);
+        })
     }
   }
 
