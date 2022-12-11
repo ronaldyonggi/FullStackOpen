@@ -35,6 +35,27 @@ const mostBlogs = blogs => {
   }
 }
 
+const mostLikes = blogs => {
+  let authors = {}
+  for (let i = 0; i < blogs.length; i++) {
+    // If not found in authors, create a new entry
+    let author = blogs[i]['author']
+    let likes = blogs[i]['likes']
+    if (!(authors[author])) {
+      authors[author] = likes
+    } else {
+      authors[author] += likes
+    }
+  }
+  // Get the author with the most values
+  let maxAuthor = Object.keys(authors).reduce((a, b) =>
+    authors[a] > authors[b] ? a : b )
+  return {
+    author: maxAuthor,
+    likes: authors[maxAuthor]
+  }
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
