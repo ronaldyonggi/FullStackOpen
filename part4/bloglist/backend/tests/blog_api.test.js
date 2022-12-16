@@ -47,6 +47,22 @@ test('a specific blog is within the returned blogs', async () => {
   expect(titles).toContain('This is the first blog')
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'a new added blog',
+    author: 'Jensen Jenkins',
+    url: 'www.jensenjenkins23.com',
+    likes: 324
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+})
 
 
 afterAll(() => mongoose.connection.close())
