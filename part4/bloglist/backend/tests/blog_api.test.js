@@ -22,7 +22,7 @@ test ('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('all blogs are returned', async () => {
+test('HTTP GET request to /api/blogs works', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body).toHaveLength(helper.initialBlogs.length)
@@ -35,7 +35,7 @@ test('a specific blog is within the returned blogs', async () => {
   expect(titles).toContain('This is the first blog')
 })
 
-test('a valid blog can be added', async () => {
+test('HTTP POST request to /api/blogs url successfully creates a new blog', async () => {
   const newBlog = {
     title: 'a new added blog',
     author: 'Jensen Jenkins',
@@ -103,6 +103,5 @@ test('a blog can be deleted', async () => {
 
   expect(titles).not.toContain(blogToDelete.title)
 })
-
 
 afterAll(() => mongoose.connection.close())
