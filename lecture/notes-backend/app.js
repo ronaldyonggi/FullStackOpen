@@ -1,3 +1,4 @@
+const usersRouter = require('./controllers/users')
 const config = require('./utils/config')
 const express = require('express')
 require('express-async-errors')
@@ -25,7 +26,7 @@ app.use(middleware.requestLogger)
 
 app.use('/api/notes', notesRouter)
 
-app.use(middleware.unknownEndpoint)
+
 app.use(middleware.errorHandler)
 
 module.exports = app
