@@ -28,11 +28,20 @@ test('HTTP GET request to /api/blogs works', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
-test('a specific blog is within the returned blogs', async () => {
+// test('a specific blog is within the returned blogs', async () => {
+//   const response = await api.get('/api/blogs')
+
+//   const titles = response.body.map(r => r.title)
+//   expect(titles).toContain('This is the first blog')
+// })
+
+test('the unique identifier property of the blog posts is named id', async () => {
   const response = await api.get('/api/blogs')
 
-  const titles = response.body.map(r => r.title)
-  expect(titles).toContain('This is the first blog')
+  const ids = response.body.map(r => r.id)
+  ids.forEach(id => {
+    expect(id).toBeDefined()
+  })
 })
 
 test('HTTP POST request to /api/blogs url successfully creates a new blog', async () => {
