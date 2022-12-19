@@ -7,4 +7,4 @@ Repo for [Full Stack Open](https://fullstackopen.com/en/)
 | ------- | ------- |
 | 2 | 2.13, 2,14 |
 | 3 | 3.20 |
-| 4 | 4.9 |
+| 4 | |
